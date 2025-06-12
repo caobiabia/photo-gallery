@@ -10,23 +10,24 @@
             font-family: sans-serif;
             text-align: center;
             margin: 20px;
-            font-size: 16px; /* 增大默认字体 */
+            font-size: 16px;
         }
 
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 响应式列布局 */
-            gap: 10px;
-            justify-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* 图片之间的间距 */
         }
 
         img {
-            width: 100%;
-            max-width: 120px;
+            width: 90%; /* 占据90%的屏幕宽度，留点边距 */
+            max-width: 600px; /* 在电脑上限制最大宽度 */
             height: auto;
             border: 1px solid #ddd;
             border-radius: 4px;
             padding: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 480px) {
@@ -35,14 +36,14 @@
             }
 
             img {
-                max-width: 100px;
+                width: 95%; /* 小屏占据更大比例 */
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>111111111111111111</h1>
+    <h1>中奖名单</h1>
 
     <div class="gallery">
         <img src="pictures/04a668b24397d859e9b6925bab76a31.jpg" alt="图片1">
