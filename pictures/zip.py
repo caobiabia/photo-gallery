@@ -1,53 +1,49 @@
 import os
 from PIL import Image
 
-def compress_images(folder_path, quality=30):
+
+def convert_jpg_to_webp(directory):
     """
-    遍历指定文件夹下的所有图片，并进行压缩。
-    压缩后的图片将替换原始图片。
+    将指定目录下所有 JPG 图片转换为 WebP 格式，并显示转换前后文件大小。
 
     Args:
-        folder_path (str): 包含图片的文件夹路径。
-        quality (int): 压缩质量，0-100之间，100代表最高质量。
-                       默认值为85，这是一个在质量和文件大小之间较好的平衡点。
+        directory (str): 包含 JPG 图片的目录路径。
     """
-    if not os.path.isdir(folder_path):
-        print(f"错误：文件夹 '{folder_path}' 不存在。")
+    if not os.path.isdir(directory):
+        print(f"错误：目录 '{directory}' 不存在。")
         return
 
-    print(f"开始压缩文件夹 '{folder_path}' 中的图片...")
-    compressed_count = 0
+    print(f"正在处理目录：'{directory}'")
+    print("-" * 30)
 
-    # 支持的图片格式
-    supported_formats = ('.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff')
+    for filename in os.listdir(directory):
+        if filename.lower().endswith(".jpg") or filename.lower().endswith(".jpeg"):
+            filepath = os.path.join(directory, filename)
 
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-
-        # 检查是否是文件且是支持的图片格式
-        if os.path.isfile(file_path) and filename.lower().endswith(supported_formats):
             try:
-                # 打开图片
-                with Image.open(file_path) as img:
-                    original_size = os.path.getsize(file_path)
+                # 获取原始文件大小
+                original_size = os.path.getsize(filepath)
+                print(f"文件: {filename}")
+                print(f"  原始大小: {original_size / 1024:.2f} KB")
 
-                    # 如果是PNG，尝试优化压缩；其他格式则直接调整质量
-                    if img.format == 'PNG':
-                        # 对于PNG，optimize=True可以减小文件大小，通常不会损失质量
-                        img.save(file_path, optimize=True)
-                    else:
-                        # 对于JPEG等格式，通过调整质量参数进行压缩
-                        img.save(file_path, quality=quality)
+                # 打开图片并转换为 WebP
+                with Image.open(filepath) as img:
+                    webp_filename = os.path.splitext(filename)[0] + ".webp"
+                    webp_filepath = os.path.join(directory, webp_filename)
+                    img.save(webp_filepath, "webp")
 
-                    new_size = os.path.getsize(file_path)
-                    print(f"已压缩 '{filename}'：原始大小 {original_size / 1024:.2f} KB -> 压缩后 {new_size / 1024:.2f} KB")
-                    compressed_count += 1
+                # 获取转换后文件大小
+                converted_size = os.path.getsize(webp_filepath)
+                print(f"  转换后大小: {converted_size / 1024:.2f} KB (保存为 {webp_filename})")
+                print("-" * 30)
 
             except Exception as e:
-                print(f"处理文件 '{filename}' 时发生错误：{e}")
+                print(f"  处理文件 '{filename}' 时发生错误: {e}")
+                print("-" * 30)
 
-    print(f"--- 压缩完成！共压缩了 {compressed_count} 张图片。---")
 
 if __name__ == "__main__":
-    images_folder = input("请输入您要压缩图片的文件夹路径：")
-    compress_images(images_folder)
+    # 指定你的图片目录
+    # 由于你提供了具体的路径，我将使用它。请确保该路径正确。
+    image_directory = r"C:\Users\gy_caoshipeng\Desktop\photo-gallery-main\pictures"
+    convert_jpg_to_webp(image_directory)
